@@ -1038,6 +1038,7 @@ automacro LastBradeBug {
 		log = Acabou de ocorrer um bug na sequencia do campo de treinamento =
 		log =					Resolvendo isso...						    =
 		log =================================================================
+		]
 		call moveBradeGrounds
 		do talk &npc(/Brade/)
 		do conf -f quest_atual lunaticos
@@ -1071,33 +1072,6 @@ automacro lockMap setado quando nao deveria {
 #		  									- Falando com o Treinador para ir a um mapa mais difícil  -								#
 #																																	#
 #####################################################################################################################################
-
-automacro changeToHeavierTrainingMoveClose {
-	QuestActive 7123
-	QuestActive 7127
-	exclusive 1
-	NpcNotNear /Trainer/
-	InMap new_1-3, new_2-3, new_3-3
-	ConfigKey master RMS Renewal Test Server
-	call {
-		do move &rand(103,105) &rand(36,38)
-	}
-}
-
-automacro changeToHeavierTraining {
-	QuestActive 7123
-	QuestActive 7127
-	exclusive 1
-	NpcNear /Trainer/
-	InMap new_1-3, new_2-3, new_3-3
-	ConfigKey master RMS Renewal Test Server
-	call {
-		log mudando pra mapa onde tem pickys e salgueiros
-		do talk $.NpcNearLastBinId #Treinador
-		do talk resp 0
-		do talk resp /5/
-	}
-}
 
 automacro treinoMaisPesadoMoverPerto {
 	QuestActive 7123
@@ -1483,38 +1457,6 @@ automacro se morrer enquanto mata pickys_e_salgueiros {
 	call mudarDeMapa
 }
 
-macro changeMap {
-	call pararDeAtacar
-	do move &rand(103,105) &rand(36,38)
-	[
-	log =====================================================
-	log = Mudando para o mapa onde tem Pickys e Salgueiros! =
-	log =====================================================
-	]
-	do talk &npc(/Trainer/) #Treinador
-	do talk resp 0
-	do talk resp /5/
-	call voltarAtacar
-}
-
-automacro ifDieWhileKillPickyAndWillow {
-	QuestActive 7123, 7127
-	CurrentHP >= 50%
-	IsInCoordinate 95 21
-	InMap new_1-3, new_2-3, new_3-3
-	exclusive 1
-	call changeMap
-}
-
-automacro ifDieWhileLevelingto12 {
-	ConfigKey quest_atual todas_completadas
-	CurrentHP >= 50%
-	IsInCoordinate 95 21
-	InMap new_1-3, new_2-3, new_3-3
-	exclusive 1
-	call changeMap
-}
-
 #####################################################################################################################################
 #																																	#
 #																[Capítulo I]														#
@@ -1828,7 +1770,8 @@ macro moverPertoDosNpcEden { #Serve de parâmetro para as demais Quests do Éden
 	call pararDeAtacar
 	[
 	log ======================================================================
-	log = Estou me movendo para perto dos NPC's do Éden para começar a Quest =
+	log = Estou me movendo para perto dos NPC's #'                           =
+	log = do Éden para começar a Quest                                       =
 	log ======================================================================
 	]
 	do move moc_para01 &rand(33,35) &rand(25,27) #Posição ótima no Éden
@@ -2067,13 +2010,6 @@ automacro Eden26FinalizarCaças {
 #####################################################################################################################################
 
 automacro IniciandoQuestEden40MoverPerto {
-	QuestInactive 2028 #===
-	QuestInactive 2029 #
-	QuestInactive 2030 #
-	QuestInactive 2031 # Esse intervalo diz respeito às Quests de Alquimista
-	QuestInactive 2032 #
-	QuestInactive 2033 #
-	QuestInactive 2034 #===
 	QuestInactive 7147 #===
 	QuestInactive 7148 #
 	QuestInactive 7149 # Esse intervalo diz respeito às Quests do Éden
@@ -2093,16 +2029,14 @@ automacro IniciandoQuestEden40MoverPerto {
 }
 
 automacro IniciandoQuestEden40 {
+	QuestInactive 7147 #===
+	QuestInactive 7148 #
+	QuestInactive 7149 # Esse intervalo diz respeito às Quests do Éden
+	QuestInactive 7150 #
+	QuestInactive 7151 #===
 	NpcNear /Boya/
 	BaseLevel 40..49
 	InInventoryID 22508 =1 #Emblema do Éden
-	QuestInactive 2028 #===
-	QuestInactive 2029 #
-	QuestInactive 2030 #
-	QuestInactive 2031 # Esse intervalo diz respeito às Quests de Alquimista
-	QuestInactive 2032 #
-	QuestInactive 2033 #
-	QuestInactive 2034 #===
 	JobID 5 #Mercador
 	exclusive 1
 	QuestInactive 7147
@@ -2126,13 +2060,6 @@ automacro Eden40SalvarNaKafra {
 	QuestActive 7147
 	BaseLevel >= 50
 	exclusive 1
-	QuestInactive 2028 #===
-	QuestInactive 2029 #
-	QuestInactive 2030 #
-	QuestInactive 2031 # Esse intervalo diz respeito às Quests de Alquimista
-	QuestInactive 2032 #
-	QuestInactive 2033 #
-	QuestInactive 2034 #===
 	ConfigKeyNot virarAlquimista true
 	ConfigKeyNot In_saveMap_sequence true
 	ConfigKeyNot saveMap prontera
@@ -2145,13 +2072,6 @@ automacro Eden40SalvarNaKafra {
 automacro Eden40IrNoMapa {
 	QuestActive 7147
 	BaseLevel >= 50
-	QuestInactive 2028 #===
-	QuestInactive 2029 #
-	QuestInactive 2030 #
-	QuestInactive 2031 # Esse intervalo diz respeito às Quests de Alquimista
-	QuestInactive 2032 #
-	QuestInactive 2033 #
-	QuestInactive 2034 #===
 	exclusive 1
 	ConfigKeyNot virarAlquimista true
 	ConfigKeyNot In_saveMap_sequence true
@@ -2176,13 +2096,6 @@ automacro Eden40Caçar {
 	QuestHuntOngoing 7148 1686, 7149 1023, 7150 1273
 	exclusive 1
   	timeout 180
-	QuestInactive 2028 #===
-	QuestInactive 2029 #
-	QuestInactive 2030 #
-	QuestInactive 2031 # Esse intervalo diz respeito às Quests de Alquimista
-	QuestInactive 2032 #
-	QuestInactive 2033 #
-	QuestInactive 2034 #===
 	call {
 		call caçarMonstros
 		if ( &config(lockMap) != gef_fild10) do conf lockMap gef_fild10
@@ -2191,13 +2104,6 @@ automacro Eden40Caçar {
 
 automacro Eden40FinalizarCaças {
 	QuestHuntCompleted 7148 1686, 7149 1023, 7150 1273
-	QuestInactive 2028 #===
-	QuestInactive 2029 #
-	QuestInactive 2030 #
-	QuestInactive 2031 # Esse intervalo diz respeito às Quests de Alquimista
-	QuestInactive 2032 #
-	QuestInactive 2033 #
-	QuestInactive 2034 #===
 	exclusive 1
 	call {
 		call pararDeAtacar
